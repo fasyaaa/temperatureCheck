@@ -1,32 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Weather Dashboard</title>
-  <link rel="stylesheet" href="/css/style.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
-  <div class="container">
-    <h1>Temperature</h1>
-
-    <div class="weather-box">
-      <div class="temp-circle">
-        <div id="temperatureValue">--°C</div>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homey Feather - Monitoring Suhu & Kelembapan</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header-row">
+        <h1>Homey Feather</h1>
+        <img src="/image/parrot.jpg" alt="Burung Eksotis" class="bird-img" />
       </div>
-      <div class="humidity-info">
-        <div>Humidity: <span id="humidityValue">--%</span></div>
-        <div>Time: <span id="timestampValue">--</span></div>
+      <p class="subtitle">
+        Monitoring suhu & kelembapan untuk ruangan burung eksotis di Kebun
+        Binatang
+      </p>
+
+      <div class="weather-box">
+        <div class="temp-circle">
+          <div id="temperatureValue">--°C</div>
+        </div>
+        <div class="humidity-info">
+          <div>Kelembapan: <span id="humidityValue">--%</span></div>
+          <div>Waktu: <span id="timestampValue">--</span></div>
+        </div>
+      </div>
+
+      <div class="charts-row">
+        <canvas id="chartSuhu"></canvas>
+        <canvas id="chartHumidity"></canvas>
+      </div>
+
+      <div class="info-box">
+        📘 Referensi: Suhu ideal 24°C – 30°C, kelembapan 50% – 70% (Jurnal Avian
+        Habitat, 2020)
       </div>
     </div>
 
-    <div class="charts-row">
-      <canvas id="chartSuhu"></canvas>
-      <canvas id="chartHumidity"></canvas>
+    <!-- Alert -->
+    <div id="alertModal" class="modal">
+      <div class="modal-content">
+        <span id="alertClose">&times;</span>
+        <h2>⚠️ Peringatan Lingkungan Tidak Ideal</h2>
+        <p id="alertMessage"></p>
+      </div>
     </div>
-  </div>
-
-  <script src="/js/suhu.js"></script>
-</body>
+    <div id="toast" class="toast"></div>
+    <script src="/js/suhu.js"></script>
+  </body>
 </html>

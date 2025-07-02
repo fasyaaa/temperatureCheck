@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const port = 3000;
+const cron = require("node-cron");
+const connection = require("./config/database");
 
 const cors = require("cors");
 app.use(cors());
@@ -27,4 +29,19 @@ app.get("/", (req, res) => {
 
 app.listen(port, () => {
     console.log(`App listening at http://localhost:${port}`);
+});
+
+// delete data every 24h 
+cron.schedule("0 0 * * *", () => {
+  const query = `
+    DELETE FROM sensor_suhu 
+    WHERE waktu < NOW() - INTERVAL 1 DAY
+  `;
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error("Gagal menghapus data lama:", err);
+    } else {
+      console.log(`Berhasil menghapus ${results.affectedRows} data yang lebih dari 24 jam`);
+    }
+  });
 });

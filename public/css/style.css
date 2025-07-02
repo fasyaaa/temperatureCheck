@@ -11,12 +11,41 @@ body {
   margin: auto;
 }
 
+/* HEADER */
+.header-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+
+.header-row h1 {
+  font-size: 2.2rem;
+  margin: 0;
+}
+
+.bird-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.bird-img:hover {
+  transform: scale(1.05);
+}
+
+/* WEATHER BOX */
 .weather-box {
   background: rgba(255, 255, 255, 0.1);
   padding: 30px;
   border-radius: 20px;
   backdrop-filter: blur(8px);
-  box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   margin-bottom: 40px;
 }
 
@@ -35,8 +64,13 @@ body {
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.08); }
+  0%, 100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
 }
 
 .humidity-info {
@@ -44,6 +78,7 @@ body {
   font-size: 1.2rem;
 }
 
+/* CHARTS */
 .charts-row {
   display: flex;
   gap: 30px;
@@ -56,4 +91,63 @@ canvas {
   border-radius: 10px;
   padding: 10px;
   max-width: 100%;
+}
+
+/* MODAL ALERT */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+}
+
+.modal-content {
+  background-color: #fff;
+  color: #000;
+  margin: 15% auto;
+  padding: 20px 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  text-align: left;
+  font-size: 1.1rem;
+}
+
+/* TOAST NOTIFICATION */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #f44336; 
+  color: white;
+  padding: 16px 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 10000;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#alertClose {
+  color: #aaa;
+  float: right;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#alertClose:hover {
+  color: red;
 }
