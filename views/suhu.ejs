@@ -10,27 +10,38 @@
   <body>
     <div class="container">
       <div class="header-row">
-        <h1>Homey Feather</h1>
-        <img src="/image/parrot.jpg" alt="Burung Eksotis" class="bird-img" />
+        <img class="title" src="/image/nama.png" alt="title" />
       </div>
       <p class="subtitle">
         Monitoring suhu & kelembapan untuk ruangan burung eksotis di Kebun
         Binatang
       </p>
+   
+      <!-- burung picture -->
+      <img src="/image/burung1.svg" alt="burung1" class="burung1">
+      <img src="/image/burung2.svg" alt="burung2" class="burung2">
+      <img src="/image/burung3.svg" alt="burung3" class="burung3">
 
       <div class="weather-box">
         <div class="temp-circle">
           <div id="temperatureValue">--°C</div>
         </div>
-        <div class="humidity-info">
-          <div>Kelembapan: <span id="humidityValue">--%</span></div>
-          <div>Waktu: <span id="timestampValue">--</span></div>
+        <div class="temp-circle">
+          <div id="humidityValue">--%</div>
         </div>
       </div>
 
-      <div class="charts-row">
-        <canvas id="chartSuhu"></canvas>
-        <canvas id="chartHumidity"></canvas>
+      <div class="chart-carousel">
+        <button class="nav-btn left" id="prevChart">❮</button>
+        <div class="chart-slider" id="chartSlider">
+          <div class="chart-container">
+            <canvas id="chartSuhu"></canvas>
+          </div>
+          <div class="chart-container">
+            <canvas id="chartHumidity"></canvas>
+          </div>
+        </div>
+        <button class="nav-btn right" id="nextChart">❯</button>
       </div>
 
       <div class="info-box">
@@ -43,7 +54,8 @@
     <div id="alertModal" class="modal">
       <div class="modal-content">
         <span id="alertClose">&times;</span>
-        <h2>⚠️ Peringatan Lingkungan Tidak Ideal</h2>
+        <img src="/image/danger.gif" alt="alertDanger" />
+        <h2>DANGER</h2>
         <p id="alertMessage"></p>
       </div>
     </div>

@@ -25,6 +25,16 @@ body {
   margin: 0;
 }
 
+.subtitle {
+  font-size: 1.5rem;
+  margin: 10px 0 30px;
+  line-height: 1.5;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+}
+
 .bird-img {
   width: 50px;
   height: 50px;
@@ -41,6 +51,13 @@ body {
 
 /* WEATHER BOX */
 .weather-box {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  flex-wrap: wrap;
   background: rgba(255, 255, 255, 0.1);
   padding: 30px;
   border-radius: 20px;
@@ -73,10 +90,6 @@ body {
   }
 }
 
-.humidity-info {
-  margin-top: 20px;
-  font-size: 1.2rem;
-}
 
 /* CHARTS */
 .charts-row {
@@ -115,8 +128,15 @@ canvas {
   width: 90%;
   max-width: 500px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  text-align: left;
+  text-align: center; 
   font-size: 1.1rem;
+}
+
+.modal-content img {
+  width: 150px;
+  height: auto;
+  display: block;
+  margin: 0 auto 20px;
 }
 
 /* TOAST NOTIFICATION */
@@ -124,7 +144,7 @@ canvas {
   position: fixed;
   bottom: 30px;
   right: 30px;
-  background-color: #f44336; 
+  background-color: #f44336;
   color: white;
   padding: 16px 24px;
   border-radius: 8px;
@@ -150,4 +170,122 @@ canvas {
 
 #alertClose:hover {
   color: red;
+}
+
+.weather-box.danger {
+  background: rgba(0, 145, 255, 0.669);
+  border: 2px solid rgb(0, 94, 255);
+  animation: shake 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-5px);
+  }
+
+  50% {
+    transform: translateX(5px);
+  }
+
+  75% {
+    transform: translateX(-5px);
+  }
+}
+
+.chart-carousel {
+  overflow: hidden;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 40px;
+  position: relative;
+  padding: 0 40px;
+}
+
+.chart-slider {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+}
+
+.chart-container {
+  flex: 0 0 100%;
+  padding: 10px;
+}
+
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0,0,0,0.4);
+  color: white;
+  font-size: 2rem;
+  border: none;
+  padding: 0 12px;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 50%;
+}
+
+.nav-btn.left {
+  left: 10px;
+}
+
+.nav-btn.right {
+  right: 10px;
+}
+
+.nav-btn:hover {
+  background-color: rgba(0,0,0,0.6);
+}
+
+/* BURUNG STYLING */
+.burung1, .burung2, .burung3 {
+  position: absolute;
+  z-index: 1;
+  width: 120px;
+}
+
+.burung1 {
+  position: absolute;
+  z-index: 1; 
+  right: -350px;
+  top: 200px;
+  width: 500px;
+}
+
+.burung2 {
+  right: -550px;
+  bottom: -440px;
+  width: 450px;
+}
+
+.burung3 {
+  left: -520px;
+  bottom: 100px; 
+  width: 450px;
+}
+
+.container {
+  position: relative;
+  max-width: 900px;
+  margin: auto;
+}
+
+@media (max-width: 768px) {
+  .burung1, .burung2, .burung3 {
+    display: none;
+  }
+}
+
+.info-box {
+  font-size: 1.5rem;
+  margin: 10px 0 30px;
+  line-height: 1.5;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
 }
