@@ -1,93 +1,13 @@
 let currentIndex = 0;
 let slider = null;
+let suhuChart = null;
+let humidityChart = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   slider = document.getElementById("chartSlider");
 
-  fetch("/api/suhu")
-    .then((res) => res.json())
-    .then((res) => {
-      if (!res.status || res.data.length === 0) return;
-
-      const rows = res.data.slice(0, 7).reverse();
-      const labels = rows.map((r) =>
-        r.waktu ? new Date(r.waktu).toLocaleTimeString() : ""
-      );
-      const temps = rows.map((r) => r.temperature);
-      const hums = rows.map((r) => r.humidity);
-
-      const latest = rows[rows.length - 1];
-      document.getElementById("temperatureValue").textContent = `${latest.temperature}°C`;
-      document.getElementById("humidityValue").textContent = `${latest.humidity}%`;
-
-      const waktu = new Date(latest.waktu);
-      const formattedTime = waktu.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-
-      const timestampEl = document.getElementById("timestampValue");
-      if (timestampEl) {
-        timestampEl.textContent = formattedTime;
-      }
-
-      checkCondition(latest.temperature, latest.humidity); // Trigger alert
-
-      // Suhu Chart
-      const ctx1 = document.getElementById("chartSuhu").getContext("2d");
-      new Chart(ctx1, {
-        type: "line",
-        data: {
-          labels,
-          datasets: [
-            {
-              label: "Suhu (°C)",
-              data: temps,
-              borderColor: "rgb(216, 99, 255)",
-              backgroundColor: "rgba(153, 102, 255, 0.2)",
-              fill: true,
-              tension: 0.3,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          plugins: { legend: { display: false } },
-          scales: {
-            x: { title: { display: true, text: "Waktu" } },
-            y: { title: { display: true, text: "Suhu (°C)" } },
-          },
-        },
-      });
-
-      // Kelembapan Chart
-      const ctx2 = document.getElementById("chartHumidity").getContext("2d");
-      new Chart(ctx2, {
-        type: "line",
-        data: {
-          labels,
-          datasets: [
-            {
-              label: "Kelembapan (%)",
-              data: hums,
-              borderColor: "rgb(54, 235, 166)",
-              backgroundColor: "rgba(75, 192, 192, 0.2)",
-              fill: true,
-              tension: 0.3,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          plugins: { legend: { display: false } },
-          scales: {
-            x: { title: { display: true, text: "Waktu" } },
-            y: { title: { display: true, text: "Kelembapan (%)" } },
-          },
-        },
-      });
-    })
-    .catch((err) => console.error("Error:", err));
+  fetchAndRenderData(); // Fetch pertama
+  setInterval(fetchAndRenderData, 60000); // Fetch setiap 60 detik
 
   // Tombol ❮ ❯
   document.getElementById("prevChart").addEventListener("click", () => {
@@ -121,6 +41,95 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+function fetchAndRenderData() {
+  fetch("/api/suhu")
+    .then((res) => res.json())
+    .then((res) => {
+      if (!res.status || res.data.length === 0) return;
+
+      const rows = res.data.slice(0, 7).reverse();
+      const labels = rows.map((r) =>
+        r.waktu ? new Date(r.waktu).toLocaleTimeString() : ""
+      );
+      const temps = rows.map((r) => r.temperature);
+      const hums = rows.map((r) => r.humidity);
+
+      const latest = rows[rows.length - 1];
+      document.getElementById("temperatureValue").textContent = `${latest.temperature}°C`;
+      document.getElementById("humidityValue").textContent = `${latest.humidity}%`;
+
+      const waktu = new Date(latest.waktu);
+      const formattedTime = waktu.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+      const timestampEl = document.getElementById("timestampValue");
+      if (timestampEl) {
+        timestampEl.textContent = formattedTime;
+      }
+
+      checkCondition(latest.temperature, latest.humidity);
+
+      // Render ulang Chart Suhu
+      const ctx1 = document.getElementById("chartSuhu").getContext("2d");
+      if (suhuChart) suhuChart.destroy();
+      suhuChart = new Chart(ctx1, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [
+            {
+              label: "Suhu (°C)",
+              data: temps,
+              borderColor: "rgb(216, 99, 255)",
+              backgroundColor: "rgba(153, 102, 255, 0.2)",
+              fill: true,
+              tension: 0.3,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { title: { display: true, text: "Waktu" } },
+            y: { title: { display: true, text: "Suhu (°C)" } },
+          },
+        },
+      });
+
+      // Render ulang Chart Kelembapan
+      const ctx2 = document.getElementById("chartHumidity").getContext("2d");
+      if (humidityChart) humidityChart.destroy();
+      humidityChart = new Chart(ctx2, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [
+            {
+              label: "Kelembapan (%)",
+              data: hums,
+              borderColor: "rgb(54, 235, 166)",
+              backgroundColor: "rgba(75, 192, 192, 0.2)",
+              fill: true,
+              tension: 0.3,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { title: { display: true, text: "Waktu" } },
+            y: { title: { display: true, text: "Kelembapan (%)" } },
+          },
+        },
+      });
+    })
+    .catch((err) => console.error("Error:", err));
+}
 
 // Alert kondisi berbahaya
 function checkCondition(temp, humidity) {
